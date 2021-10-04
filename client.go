@@ -65,6 +65,10 @@ func (rpc *Client) Call(method string, params ...interface{}) (*Response, error)
 		return nil, errors.WithStack(err)
 	}
 
+	if err := rsp.Body.Close(); err != nil {
+		return nil, errors.WithStack(err)
+	}
+
 	rpc.resp = &Response{}
 	if err := json.Unmarshal(body, &rpc.resp); err != nil {
 		return nil, errors.WithStack(err)
